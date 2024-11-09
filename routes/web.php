@@ -1,5 +1,6 @@
 <?php
-use App\Http\Controllers\MainController;
+use App\Http\Controllers\MerchantOutletActivity\MainController;
+// use App\Http\Controllers\MainController;
 use App\Http\Controllers\InquiryController;
 
 use Illuminate\Support\Facades\Route;

@@ -14,6 +14,7 @@ class MainController extends Controller
      */
     public function index()
     {
+
         $response = Http::post('http://localhost:10036/category/gets', [
             'id' => 0,
             'clientName' => "",
