@@ -24,8 +24,8 @@ class UpdateTrxBill extends Migration
     public function down()
     {
         Schema::table('biller_trxs', function (Blueprint $table) {
-            $table->text('other_msg')->nullable()->change();
-            // $table->string('other_msg');
+            // $table->text('other_msg')->nullable()->change();
+            $table->text('other_msg');
         });
     }
 }
