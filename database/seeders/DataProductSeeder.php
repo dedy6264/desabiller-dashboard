@@ -103,67 +103,7 @@ class DataProductSeeder extends Seeder
         'created_at' => now(),
         'updated_at' => now(),
 ]]);
-    DB::table('product_clans')->insert([[
-        'product_clan_name' => "PULSA INDOSAT",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "PULSA TELKOMSEL",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "PULSA XL",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "PULSA THREE",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "PULSA BY.U",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "PULSA SMARTFREEN",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "BPJSKS",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ],[
-        'product_clan_name' => "PLN PRE",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),       
-     ],[
-        'product_clan_name' => "PLN POST",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-     ],[
-        'product_clan_name' => "PDAM",
-        'created_by' => "sys",
-        'updated_by' => "sys",
-        'created_at' => now(),
-        'updated_at' => now(),
-        ]]);
+   
     // DB::table('product_providers')->insert([[
     //     'provider_id' => 1,
     //     'product_provider_name' => "Pulsa Telkomsel 10K",

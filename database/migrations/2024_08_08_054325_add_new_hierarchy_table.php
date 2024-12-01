@@ -71,13 +71,6 @@ class AddNewHierarchyTable extends Migration
 
             $table->timestamps();
         });
-        Schema::create('product_clans', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_clan_name')->unique();            
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->timestamps();
-        });
         Schema::create('product_providers', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('provider_id');
@@ -96,12 +89,11 @@ class AddNewHierarchyTable extends Migration
             $table->id();
             $table->unsignedInteger('product_provider_id');
             $table->foreign('product_provider_id')->references('id')->on('product_providers');
-            $table->unsignedInteger('product_clan_id');            
-            $table->foreign('product_clan_id')->references('id')->on('product_clans');
             $table->unsignedInteger('product_category_id');
             $table->foreign('product_category_id')->references('id')->on('product_categories');
             $table->unsignedInteger('product_type_id');
             $table->foreign('product_type_id')->references('id')->on('product_types');
+            $table->unsignedInteger('product_reference_id')->nullable() ;
             $table->string('product_name')->unique();
             $table->string('product_code')->unique();
             $table->string('product_nominal')->nullable();
@@ -112,16 +104,11 @@ class AddNewHierarchyTable extends Migration
             $table->double('product_merchant_fee');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            // product_nominal
-            // product_details
-            // icon_url
             $table->timestamps();
         });
         //trx
         Schema::create('biller_trxs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('product_clan_id'); 
-            $table->string('product_clan_name');
             $table->unsignedInteger('product_category_id');
             $table->string('product_category_name');
             $table->unsignedInteger('product_type_id');
@@ -142,7 +129,9 @@ class AddNewHierarchyTable extends Migration
             $table->double('product_provider_price');
             $table->double('product_provider_admin_fee');
             $table->double('product_provider_merchant_fee');
-
+            $table->unsignedInteger('product_reference_id')->nullable();
+            $table->string('product_reference_code')->nullable();
+            
             $table->string('status_code');
             $table->string('status_message');
             $table->string('status_desc');
@@ -201,7 +190,6 @@ class AddNewHierarchyTable extends Migration
         Schema::dropIfExists('product_providers');
         Schema::dropIfExists('product_categories');
         Schema::dropIfExists('product_types');
-        Schema::dropIfExists('product_clans');
         Schema::dropIfExists('providers');
         Schema::dropIfExists('biller_trxs');
         Schema::dropIfExists('trx_statuses');
