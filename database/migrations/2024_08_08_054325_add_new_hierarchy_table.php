@@ -164,7 +164,7 @@ class AddNewHierarchyTable extends Migration
             $table->string('merchant_outlet_username');
             
             $table->string('customer_id');
-            $table->string('other_msg');
+            $table->text('other_msg')->nullable();
             $table->double('total_trx_amount');
             
             $table->string('created_by');

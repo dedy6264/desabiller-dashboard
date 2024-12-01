@@ -13,6 +13,20 @@
 @endsection
 
 @section('content')
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if (Session::get('fail'))
+            <div class="alert alert-warning" role="alert">
+                {{Session::get('fail')}}
+              </div>
+            @endif
 {{-- <div class="row">
 
     <!-- Earnings (Monthly) Card Example -->
@@ -180,81 +194,58 @@
     <div class="col-lg-6">
         <!-- Color System -->
         <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-primary text-white shadow">
-                    <div class="card-body">
-                        Primary
-                        <div class="text-white-50 small">#4e73df</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-success text-white shadow">
-                    <div class="card-body">
-                        Success
-                        <div class="text-white-50 small">#1cc88a</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-info text-white shadow">
-                    <div class="card-body">
-                        Info
-                        <div class="text-white-50 small">#36b9cc</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-warning text-white shadow">
-                    <div class="card-body">
-                        Warning
-                        <div class="text-white-50 small">#f6c23e</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-danger text-white shadow">
-                    <div class="card-body">
-                        Danger
-                        <div class="text-white-50 small">#e74a3b</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-secondary text-white shadow">
-                    <div class="card-body">
-                        Secondary
-                        <div class="text-white-50 small">#858796</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-light text-black shadow">
-                    <div class="card-body">
-                        Light
-                        <div class="text-black-50 small">#f8f9fc</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-dark text-white shadow">
-                    <div class="card-body">
-                        Dark
-                        <div class="text-white-50 small">#5a5c69</div>
-                    </div>
-                </div>
+            <div class="col-lg-3 mb-4 d-flex justify-content-center align-items-center">
+                <a href="#" class="btn btn-primary btn-circle">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
             </div>
         @foreach ($dataRes as $item)
-            <div class="col-lg-6 mb-4">
-                <div class="card bg-dark text-white shadow">
-                    <div class="card-body">
-                        <a class="" href="{{ route('pulsa') }}">{{$item['productCategoryName']}}</a>
+            <div class="col-lg-3 mb-4">
+                {{-- <div class="card bg-dark text-white shadow"> --}}
+                    {{-- @if ($item['id']==11 || $item['id']==1) --}}
+                    <a class="btn btn-success btn-sm card bg-success text-white text-left shadow" href="#" data-dismiss="modal" data-toggle="modal" data-target="#modalPayment{{$item['id']}}">                    
+                        <div class="card-body">
+                            {{$item['productCategoryName']}}
+                            <div class="text-white-50 small">{{$item['id']}}</div>
+                        </div>
+                    </a>    
+                      {{-- modal input id --}}
+                    <div class="modal fade" id="modalPayment{{$item['id']}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Payment</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                       
+                                  <div class="col-md-12 mb-4">
+                                    <form action="{{route('getProducts')}}" method="post">
+                                        @csrf
+                                        <input type="text" name="idCustomer" value="{{--$pay->id--}}" >
+                                        <input type="text" name="categoryId" value="{{$item['id']}}" hidden>
+                                        <button class="btnprn btn btn-success  btn-lg btn-block" type="submit" value="submit">{{--$pay->payment_method_name--}}ABCD</button>
+                                    </form>
+                                  </div>
 
-                        
-                        {{$item['id']}}
-                        <div class="text-white-50 small">#5a5c69</div>
-                    </div>
-                </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {{-- @else
+                      <a class="btn btn-success btn-sm card bg-success text-white text-left shadow" href="{{ route('getProducts') }}">
+                        <div class="card-body">
+                            {{$item['productCategoryName']}}
+                            <div class="text-white-50 small">{{$item['id']}}</div>
+                        </div>
+                        </a>    
+                      @endif --}}
+                   
+                {{-- </div> --}}
             </div>
         @endforeach
         </div>

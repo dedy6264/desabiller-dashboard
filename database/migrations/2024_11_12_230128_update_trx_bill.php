@@ -10,9 +10,15 @@ class UpdateTrxBill extends Migration
     // php artisan migrate:rollback --path=/database/migrations/2024_11_12_230128_update_trx_bill.php
     public function up()
     {
-        Schema::table('biller_trxs', function (Blueprint $table) {
-            // $table->text('other_msg')->nullable()->change();
-            $table->dropColumn('other_msg');
+        Schema::create('operator_prefixs', function (Blueprint $table) {
+            $table->id();
+            $table->string('prefix_number');//089.0888,08213
+            $table->string('operator_prefix_name');
+            $table->string('status_code');
+            $table->string('status_message');
+            // $table->string('created_by');
+            // $table->string('updated_by');
+            // $table->timestamps();
         });
     }
 
@@ -23,9 +29,6 @@ class UpdateTrxBill extends Migration
      */
     public function down()
     {
-        Schema::table('biller_trxs', function (Blueprint $table) {
-            // $table->text('other_msg')->nullable()->change();
-            $table->text('other_msg')->nullable();
-        });
+       
     }
 }

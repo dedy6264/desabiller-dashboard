@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\MerchantOutletActivity;
+namespace App\Http\Controllers\AdminActivity;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class MainController extends Controller
      */
     public function index()
     {
-        dd("welcome to merchantActivity");
+        //
     }
 
     /**
