@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Http;
 class MainBillerController extends Controller
 {
 
-    public function index()
-    {
-        $response = Http::withBasicAuth('joe','secret')->post('202.10.41.137:10010/category/gets', [
+    public function index(){
+        $response = Http::withBasicAuth('joe','secret')->post('http://localhost:10010/category/gets', [
+        // $response = Http::withBasicAuth('joe','secret')->post('202.10.41.137:10010/category/gets', [
             'id' => 0,
             'clientName' => "",
             'limit' => 0,
@@ -30,11 +30,119 @@ class MainBillerController extends Controller
         $dataRes = $response['data'] ?? [];
         // dd($dataRes);
         // dd("welcome to merchantActivity");
-        return view("dashboard.content",compact('dataRes'));
+        return view("dashboard.biller.content",compact('dataRes'));
     }
-    // function getPrefix($idCustomer){
+    public function showProducts(){
+        return view("dashboard.biller.showProduct.content");
 
-    // }
+    }
+    public function showProductKhusus(Request $request){
+        $nomorTujuan = $request->input('nomorTujuan');
+        {
+            $response = Http::withBasicAuth('joe','secret')->post('http://localhost:10010/helper/getReference', [
+                'subscriberId' => $nomorTujuan,
+            ])->json();
+            if ($response['statusCode']!=="00"){
+                return response()->json(['error' => 'operator not found'], 400);
+            }
+            if (!is_array($response) || !isset($response['result']) || !is_array($response['result'])) {
+                return response()->json(['error' => 'Invalid API response format or data type'], 500);
+            }
+            $response = $response['result'];
+            $dataRes = $response['data'] ?? [];
+            // dd($dataRes['productReferenceCode']);
+        }
+        {
+            $response = Http::withBasicAuth('joe','secret')->post('http://localhost:10010/product/gets', [
+                "productReferenceCode"=>$dataRes['productReferenceCode'],
+            ])->json();
+            if ($response['statusCode']!=="00"){
+                return response()->json(['error' => 'operator not found'], 400);
+            }
+            if (!is_array($response) || !isset($response['result']) || !is_array($response['result'])) {
+                return response()->json(['error' => 'Invalid API response format or data type'], 500);
+            }
+            $response = $response['result'];
+            $dataRes = $response['data'] ?? [];
+            // dd($dataRes);
+        }
+        // Validasi nomor
+        if (strlen($nomorTujuan) < 4) {
+            return response()->json(['error' => 'Nomor tidak valid'], 400);
+        }
+    
+        // Simulasi data berdasarkan nomor
+        // $layanan = [
+        //     ['namaLayanan' => 'Three 5.000', 'harga' => '6.705'],
+        //     ['namaLayanan' => 'Three 10.000', 'harga' => '11.740'],
+        //     ['namaLayanan' => 'Three 15.000', 'harga' => '16.315'],
+        // ];
+        $layanan=$dataRes;
+        return response()->json($layanan);
+    }
+    public function inquiry(Request $request){
+        // dd($request->all());
+
+        if ($request->subscriberNumber=="" || $request->subscriberNumber==0){
+            // dd($request->all());
+            return back()->with('fail','customer id cannot be null');
+        }
+        $additional=[
+            'subscriberNumber'=>$request->subscriberNumber,
+        ];
+        $payload=[
+            'productCode'=>$request->productCode,
+            'additionalField'=>$additional,
+        ];
+        // dump($payload);
+        $response = Http::withHeaders([
+            'Authorization'=>'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM5NDU5ODUsIm1lcmNoYW50SWQiOjEsIm91dGxldElkIjoyLCJvdXRsZXRVc2VybmFtZSI6InRhdWNpa3VlbmFrIn0.sI0w4qjvVgztZkHaBCNpBHeRPIVWe6UrU8gJL8zSGbk',
+            'Content-Type' => 'application/json' 
+            ])
+        ->post('http://localhost:10010/biller/inquiry', $payload)->json();
+        // ->post('202.10.41.137:10010/biller/inquiry', $payload)->json();
+        dd($response);
+        if ($response['statusCode']!=="10"){
+            if($response['message']=="invalid or expired jwt"){
+                return response()->json(['error' => 'invalid or expired jwt'], 400);
+            }
+            return response()->json(['error' => 'operator not found'], 400);
+        }
+        if (!is_array($response) || !isset($response['result']) || !is_array($response['result'])) {
+            return response()->json(['error' => 'Invalid API response format or data type'], 500);
+        }
+        $response = $response['result'];
+        // dump($response);
+        $dataInq = $response['data'] ?? [];
+        // dump($dataInq);
+
+        return response()->json($response);
+
+    }
+    public function payment(Request $request){
+        // dump($request->all());
+        $payload=[
+            'referenceNumber'=>$request->referenceNumber,
+        ];
+        $response = Http::withHeaders([
+            'Authorization'=>'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM5NDU5ODUsIm1lcmNoYW50SWQiOjEsIm91dGxldElkIjoyLCJvdXRsZXRVc2VybmFtZSI6InRhdWNpa3VlbmFrIn0.sI0w4qjvVgztZkHaBCNpBHeRPIVWe6UrU8gJL8zSGbk',
+            'Content-Type' => 'application/json' 
+            ])
+        ->post('http://localhost:10010/biller/payment', $payload)->json();
+        // ->post('202.10.41.137:10010/biller/inquiry', $payload)->json();
+        // dump($response);
+        // if ($response['statusCode']!=="00" || $response['statusCode']!=="05"){
+        //     dump($response['statusCode']);
+        //     return response()->json(['error' => 'operator not found'], 400);
+        // }
+        if (!is_array($response) || !isset($response['result']) || !is_array($response['result'])) {
+            return response()->json(['error' => 'Invalid API response format or data type'], 500);
+        }
+        $response = $response['result'];
+        $dataInq = $response['data'] ?? [];
+        // return response()->json(['error' => 'operator not found'], 200);
+        return response()->json($response);
+    }
     public function getProducts(Request $request){
         $validate=$request->validate([
             'idCustomer'=>'required',
@@ -61,26 +169,9 @@ class MainBillerController extends Controller
 
         return view("dashboard.biller.showProduct.content",compact('dataProducts','idCustomer'));
     }
-    public function inquiry(Request $request){
-       
-        if ($request->idCustomer=="" || $request->idCustomer==0){
-            dd($request->all());
-            return back()->with('fail','customer id cannot be null');
-        }
-        $additional=[
-            'subscriberNumber'=>$request->idCustomer,
-        ];
-        $payload=[
-            'productCode'=>$request->productCode,
-            'additionalField'=>$additional,
-        ];
-        dump($payload);
-        $response = Http::withHeaders([
-            'Authorization'=>'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzIyODM1MjYsIm1lcmNoYW50SWQiOjEsIm91dGxldElkIjoyLCJvdXRsZXRVc2VybmFtZSI6InRhdWNpa3VlbmFrIn0.RhqwJwD8FhIeofjhQwuZWnL6ihhUaRfaQcvCyewqEj8',
-            'Content-Type' => 'application/json' 
-            ])
-        ->post('202.10.41.137:10010/biller/inquiry', $payload)->json();
-            dump($response);
+    public function trxReport(Request $request){
+        // dump($request->all());
+        return view('dashboard.biller.showProduct.trxReport');
     }
     public function create()
     {

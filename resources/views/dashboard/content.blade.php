@@ -195,10 +195,14 @@
         <!-- Color System -->
         <div class="row">
             <div class="col-lg-3 mb-4 d-flex justify-content-center align-items-center">
-                <a href="#" class="btn btn-primary btn-circle">
+                <a href="{{route('inquiry')}}" class="btn btn-primary btn-circle" onclick="event.preventDefault(); document.getElementById('submit-form').submit();" >
                     <i class="fab fa-facebook-f"></i>
                 </a>
             </div>
+            <form id="submit-form" action="{{ route('inquiry') }}" method="POST" class="hidden">
+                @csrf
+                @method('POST')
+            </form>
         @foreach ($dataRes as $item)
             <div class="col-lg-3 mb-4">
                 {{-- <div class="card bg-dark text-white shadow"> --}}
@@ -407,6 +411,41 @@
 @endsection
 
 @section('customScript')
+{{-- <script type="">
+    function sendPostRequest(event,categoryId) {
+        console.log("sendPostRequest called!",categoryId); 
+        event.preventDefault(); // Mencegah navigasi default <a>
+
+        // Data yang akan dikirim
+        const data = {
+            name: "John Doe",
+            email: "john.doe@example.com",
+            _token: "{{ csrf_token() }}" // Tambahkan CSRF token Laravel
+        };
+
+        fetch("{{ route('inquiry') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log("Response:", result);
+            alert("Request sent successfully!");
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred.");
+        });
+    }
+</script> --}}
      <!-- Page level plugins -->
      <script src="{{url('admin/vendor/chart.js/Chart.min.js')}}"></script>
 

@@ -22,7 +22,7 @@
     @yield('customLink')
 
 </head>
-<body id="page-top">
+<body id="page-top" class="sidebar-toggled">
     <!-- Page Wrapper -->
     <div id="app">
     <div id="wrapper">

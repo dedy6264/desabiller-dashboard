@@ -20,8 +20,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 Route::get('/', [MainBillerController::class, 'index'])->name('home'); 
+Route::get('/showProduct', [MainBillerController::class, 'showProducts'])->name('showProduct'); 
+Route::post('/showProductKhusus', [MainBillerController::class, 'showProductKhusus'])->name('showProductKhusus'); 
+
 Route::post('/getProducts',[MainBillerController::class,'getProducts'])->name('getProducts');
 Route::post('/inquiry',[MainBillerController::class,'inquiry'])->name('inquiry');
+Route::post('/payment',[MainBillerController::class,'payment'])->name('payment');
+Route::get('/trxReport',[MainBillerController::class,'trxReport'])->name('trxReport');
 Route::post('/pulsa', [InquiryController::class, 'pulsaIndex'])->name('pulsa'); //proses logout
 Route::get('/pulsa/checkSimProv', [InquiryController::class, 'pulsaCheckSimProvider'])->name('pulsa.checkSimProv'); //proses logout
 
