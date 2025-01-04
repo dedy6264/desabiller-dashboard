@@ -96,12 +96,12 @@ class MainBillerController extends Controller
         ];
         // dump($payload);
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM5NDU5ODUsIm1lcmNoYW50SWQiOjEsIm91dGxldElkIjoyLCJvdXRsZXRVc2VybmFtZSI6InRhdWNpa3VlbmFrIn0.sI0w4qjvVgztZkHaBCNpBHeRPIVWe6UrU8gJL8zSGbk',
+            'Authorization'=>'Bearer '.env('TOKEN'),
             'Content-Type' => 'application/json' 
             ])
         ->post('http://localhost:10010/biller/inquiry', $payload)->json();
         // ->post('202.10.41.137:10010/biller/inquiry', $payload)->json();
-        dd($response);
+        // dd($response);
         if ($response['statusCode']!=="10"){
             if($response['message']=="invalid or expired jwt"){
                 return response()->json(['error' => 'invalid or expired jwt'], 400);
@@ -125,7 +125,7 @@ class MainBillerController extends Controller
             'referenceNumber'=>$request->referenceNumber,
         ];
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzM5NDU5ODUsIm1lcmNoYW50SWQiOjEsIm91dGxldElkIjoyLCJvdXRsZXRVc2VybmFtZSI6InRhdWNpa3VlbmFrIn0.sI0w4qjvVgztZkHaBCNpBHeRPIVWe6UrU8gJL8zSGbk',
+            'Authorization'=>'Bearer '.env('DB_CONNECTION', 'mysql'),
             'Content-Type' => 'application/json' 
             ])
         ->post('http://localhost:10010/biller/payment', $payload)->json();
