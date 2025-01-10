@@ -13,6 +13,15 @@
 @endsection
 
 @section('customLink')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<style>
+    .disabled-link {
+        pointer-events: none; /* Nonaktifkan interaksi */
+        cursor: not-allowed; /* Ubah kursor menjadi ikon "tidak diperbolehkan" */
+        color: gray; /* Ganti warna teks */
+        text-decoration: none; /* Opsional: hilangkan garis bawah */
+    }
+</style>
 {{-- <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" /> --}}
 @endsection
 
@@ -37,7 +46,7 @@
             <!-- Color System -->
             <div class="row">
                 <div class="col-lg-3 mb-4 d-flex justify-content-center align-items-center">
-                    <a href="{{route('showProduct')}}" class="btn btn-primary btn-circle "  >
+                    <a href="{{route('showProduct')}}" class="btn btn-primary btn-circle btn-lg"  >
                         <i class="fab fa-facebook-f"></i>
                     </a>
                 </div>
@@ -51,9 +60,9 @@
                 @else
                     <div class="col-lg-3 mb-4">
                         {{-- <div class="card bg-dark text-white shadow"> --}}
-                            <a class="btn btn-success btn-sm card bg-success text-white text-left shadow" href="#" data-dismiss="modal" data-toggle="modal" data-target="#modalPayment{{$item['id']}}">                    
+                            <a class="btn btn-success btn-sm card bg-success text-white text-left shadow disabled-link" href="#" data-dismiss="modal" data-toggle="modal" data-target="#modalPayment{{$item['id']}}" onclick="return false;">                    
                                 <div class="card-body">
-                                    {{$item['productCategoryName']}}
+                                    {{-- {{$item['productCategoryName']}} --}}
                                     <div class="text-white-50 small">{{$item['id']}}</div>
                                 </div>
                             </a>    
@@ -85,14 +94,7 @@
                                 </div>
                                 </div>
                             </div>
-                            {{-- <a class="btn btn-success btn-sm card bg-success text-white text-left shadow" href="{{ route('getProducts') }}"> 
-                                <div class="card-body">
-                                    {{$item['productCategoryName']}}
-                                    <div class="text-white-50 small">{{$item['id']}}</div>
-                                </div>
-                                </a>    
-                                
-                                {{-- </div> --}}
+                            {{--modal --}}
                     </div>
                 @endif
             @endforeach
@@ -108,10 +110,14 @@
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Position</th>
-                                    <th>Office</th>
-                                    <th>Age</th>
+                                    <th>Created At</th>
+                                    <th>Updated At</th>
+                                    <th>Reference Number</th>
+                                    <th>Status Code</th>
+                                    <th>Status Desc</th>
+                                    <th>Product Name</th>
+                                    <th>Product Code</th>
+                                    <th>Merchant</th>
                                     {{-- <th>Start date</th>
                                     <th>Salary</th> --}}
                                 </tr>
@@ -157,6 +163,126 @@
         "extn":       "5421"
     },
     {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
+        "name":       "Tiger Nixon",
+        "position":   "System Architect",
+        "salary":     "$3,120",
+        "start_date": "2011/04/25",
+        "office":     "Edinburgh",
+        "extn":       "5421"
+    },
+    {
         "name":       "Garrett Winters",
         "position":   "Director",
         "salary":     "$5,300",
@@ -166,12 +292,37 @@
     }
 ]
     $('#dataTable').DataTable({
-        data:data,
+        // data: data,
+    serverSide: false,
+    ajax: {
+        url: '{{route("trxReport")}}',
+        method:"POST",
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Tambahkan token CSRF
+        },
+        dataSrc:'data',
+    },
         columns: [
-        { data: 'name' },
-        { data: 'position' },
-        { data: 'salary' },
-        { data: 'office' }
+        { data: 'createdAt' }, // Kolom pertama mengambil clientName
+        { data: 'updatedAt' },  // Kolom kedua mengambil groupName
+        { data: 'referenceNumber' }, // Kolom ketiga mengambil merchantOutletName
+        { data: 'statusCode' }, // Kolom ketiga mengambil merchantOutletName
+        { 
+            data: 'statusCode',
+            render:function(data,type,row){
+                // return data;
+                if(data=='05'){//pay pending
+                    // console.log(row.referenceNumber);
+                    return `<a href="/advice/${row.referenceNumber}" alt="Cek Status">${row.statusMessage}</a>`;
+                    // return `<a href="{{route('advice',`+row.referenceNumber+`)}}">Adv</a>`;
+                }else{
+                    return row.statusMessage;
+                }
+            },
+        },
+        { data: 'productName' }, // Kolom keempat mengambil productCode
+        { data: 'productCode' }, // Kolom keempat mengambil productCode
+        { data: 'merchantName' }, // Kolom keempat mengambil productCode
     ]
     });
     });    
@@ -183,7 +334,7 @@
      {{-- <script src="{{url('admin/js/demo/chart-area-demo.js')}}"></script>
      <script src="{{url('admin/js/demo/chart-pie-demo.js')}}"></script> --}}
      <script src="{{url('admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{url('vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
-    {{-- <script src="{{url('admin/js/demo/datatables-demo.js')}}"></script> --}}
+    <script src="{{url('admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{url('admin/js/demo/datatables-demo.js')}}"></script>
 
 @endsection

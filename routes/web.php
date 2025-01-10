@@ -26,7 +26,8 @@ Route::post('/showProductKhusus', [MainBillerController::class, 'showProductKhus
 Route::post('/getProducts',[MainBillerController::class,'getProducts'])->name('getProducts');
 Route::post('/inquiry',[MainBillerController::class,'inquiry'])->name('inquiry');
 Route::post('/payment',[MainBillerController::class,'payment'])->name('payment');
-Route::get('/trxReport',[MainBillerController::class,'trxReport'])->name('trxReport');
+Route::get('/advice/{id}',[MainBillerController::class,'advice'])->name('advice');
+Route::post('/trxReport',[MainBillerController::class,'trxReport'])->name('trxReport');
 Route::post('/pulsa', [InquiryController::class, 'pulsaIndex'])->name('pulsa'); //proses logout
 Route::get('/pulsa/checkSimProv', [InquiryController::class, 'pulsaCheckSimProvider'])->name('pulsa.checkSimProv'); //proses logout
 

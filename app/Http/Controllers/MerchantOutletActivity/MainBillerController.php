@@ -34,7 +34,6 @@ class MainBillerController extends Controller
     }
     public function showProducts(){
         return view("dashboard.biller.showProduct.content");
-
     }
     public function showProductKhusus(Request $request){
         $nomorTujuan = $request->input('nomorTujuan');
@@ -125,7 +124,7 @@ class MainBillerController extends Controller
             'referenceNumber'=>$request->referenceNumber,
         ];
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer '.env('DB_CONNECTION', 'mysql'),
+            'Authorization'=>'Bearer '.env('TOKEN'),
             'Content-Type' => 'application/json' 
             ])
         ->post('http://localhost:10010/biller/payment', $payload)->json();
@@ -170,33 +169,84 @@ class MainBillerController extends Controller
         return view("dashboard.biller.showProduct.content",compact('dataProducts','idCustomer'));
     }
     public function trxReport(Request $request){
-        // dump($request->all());
-        return view('dashboard.biller.showProduct.trxReport');
+        // dump($request->search);
+        $filter=[
+            "start"=>(int)$request->start,
+            "length"=>(int)$request->length,
+            "limit"=>(int)$request->length,
+            "draw"=>(int)$request->draw,
+            // "order"=>$request->order,
+            // "search"=>$request->search,
+            "offset"=>0,
+            "orderBy"=>"",
+            "createdAt"=>"",
+            "createdBy"=>"",
+            "updatedAt"=>"",
+            "updatedBy"=>"",
+        ];
+        $payload=[
+            'filter'=>$filter,
+        ];
+        $response = Http::withHeaders([
+            'Authorization'=>'Bearer '.env('TOKEN'),
+            'Content-Type' => 'application/json' 
+            ])
+            ->post('http://localhost:10010/trx/getTrx',$payload)->json();
+            // dump($response);
+        if (!is_array($response) || !isset($response['result']) || !is_array($response['result'])) {
+            return response()->json(['error' => 'Invalid API response format or data type'], 500);
+        }
+        $response = $response['result'];
+           
+        return response()->json($response);
+        // return view('dashboard.biller.showProduct.trxReport');
     }
-    public function create()
-    {
+    public function advice(Request $request,$id){
+        // dump($id);
+        $payload=[
+            'referenceNumber'=>$id,
+        ];
+        // dump($payload);
+        $response = Http::withHeaders([
+            'Authorization'=>'Bearer '.env('TOKEN'),
+            'Content-Type' => 'application/json' 
+            ])
+        ->post('http://localhost:10010/biller/advice', $payload)->json();
+        // dd($response);
+        if($response['statusCode']!="10"){
+            if($response['statusCode']!="05"){
+                if($response['message']=="invalid or expired jwt"){
+                    return response()->json(['error' => 'invalid or expired jwt'], 400);
+                }
+                return response()->json(['error' => 'operator not found'], 400);
+            }
+        }
+
+        // if ($response['statusCode']!=="10"){
+        //     if($response['message']=="invalid or expired jwt"){
+        //         return response()->json(['error' => 'invalid or expired jwt'], 400);
+        //     }
+        //     return response()->json(['error' => 'operator not found'], 400);
+        // }
+        // dump("OKOK");
+        if (!is_array($response) || !isset($response['result']) || !is_array($response['result'])) {
+            return response()->json(['error' => 'Invalid API response format or data type'], 500);
+        }
+        return redirect()->route('home');
+    }
+    public function create(){
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         //
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
+    public function show($id){
         //
     }
 
