@@ -4,12 +4,25 @@ namespace App\Http\Controllers\MerchantOutletActivity;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Http;
 
 class MainBillerController extends Controller
 {
-
+    public function __construct()
+    {
+        if (!session()->has('user')){
+            return redirect()->route('login');
+        }
+        // Memastikan session 'user' ada sebelum akses controller
+    }
     public function index(){
+        // session()->invalidate();
+        // if (!session()->has('user')){
+        //     return redirect()->route('login');
+        // }
+        // dd("MAIN",session('user')['token']);
         $response = Http::withBasicAuth('joe','secret')->post('http://localhost:10010/category/gets', [
         // $response = Http::withBasicAuth('joe','secret')->post('202.10.41.137:10010/category/gets', [
             'id' => 0,
@@ -95,14 +108,14 @@ class MainBillerController extends Controller
         ];
         // dump($payload);
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer '.env('TOKEN'),
+            'Authorization'=>'Bearer '.session('user')['token'],
             'Content-Type' => 'application/json' 
             ])
         ->post('http://localhost:10010/biller/inquiry', $payload)->json();
         // ->post('202.10.41.137:10010/biller/inquiry', $payload)->json();
         // dd($response);
         if ($response['statusCode']!=="10"){
-            if($response['message']=="invalid or expired jwt"){
+            if($response['message']==="invalid or expired jwt"){
                 return response()->json(['error' => 'invalid or expired jwt'], 400);
             }
             return response()->json(['error' => 'operator not found'], 400);
@@ -124,7 +137,7 @@ class MainBillerController extends Controller
             'referenceNumber'=>$request->referenceNumber,
         ];
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer '.env('TOKEN'),
+            'Authorization'=>'Bearer '.session('user')['token'],
             'Content-Type' => 'application/json' 
             ])
         ->post('http://localhost:10010/biller/payment', $payload)->json();
@@ -169,7 +182,7 @@ class MainBillerController extends Controller
         return view("dashboard.biller.showProduct.content",compact('dataProducts','idCustomer'));
     }
     public function trxReport(Request $request){
-        // dump($request->search);
+        // dd("ytuygiuygi");
         $filter=[
             "start"=>(int)$request->start,
             "length"=>(int)$request->length,
@@ -188,7 +201,7 @@ class MainBillerController extends Controller
             'filter'=>$filter,
         ];
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer '.env('TOKEN'),
+            'Authorization'=>'Bearer '.session('user')['token'],
             'Content-Type' => 'application/json' 
             ])
             ->post('http://localhost:10010/trx/getTrx',$payload)->json();
@@ -208,14 +221,14 @@ class MainBillerController extends Controller
         ];
         // dump($payload);
         $response = Http::withHeaders([
-            'Authorization'=>'Bearer '.env('TOKEN'),
+            'Authorization'=>'Bearer '.session('user')['token'],
             'Content-Type' => 'application/json' 
             ])
         ->post('http://localhost:10010/biller/advice', $payload)->json();
         // dd($response);
-        if($response['statusCode']!="10"){
-            if($response['statusCode']!="05"){
-                if($response['message']=="invalid or expired jwt"){
+        if($response['statusCode']!=="10"){
+            if($response['statusCode']!=="05"){
+                if($response['message']==="invalid or expired jwt"){
                     return response()->json(['error' => 'invalid or expired jwt'], 400);
                 }
                 return response()->json(['error' => 'operator not found'], 400);
